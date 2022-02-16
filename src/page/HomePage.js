@@ -18,7 +18,7 @@ export default function HomePage() {
         <ul>
           {films.results.map(film => (
             <li key={film.id}>
-              <NavLink to={`${url}movies/${film.id} `}>
+              <NavLink to={`${url}movies/${film.id}`}>
                 {film.title} {film.original_name}
               </NavLink>
             </li>

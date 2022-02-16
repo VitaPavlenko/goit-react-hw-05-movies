@@ -1,13 +1,7 @@
-import {
-  useParams,
-  Link,
-  NavLink,
-  Route,
-  useRouteMatch,
-} from 'react-router-dom';
+import { useParams, Link, Route, useRouteMatch } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import * as api from '../services/api';
-import Cast from 'components/Cast/Cast';
+import Cast from '../components/Cast/Cast';
 import Reviews from 'components/Reviews/Reviews';
 
 const MovieDetailsPage = () => {
@@ -19,9 +13,10 @@ const MovieDetailsPage = () => {
     api.fetchMovieDetails(moviesId).then(setFilms);
   }, [moviesId]);
 
-  console.log(films);
+  // console.log(films);
   //   const { backdrop_path, original_title } = films;
   const imgUrl = 'https://image.tmdb.org/t/p/w400';
+
   return (
     <>
       <Link to="/">Go back</Link>
@@ -40,21 +35,20 @@ const MovieDetailsPage = () => {
             ))}
           </ul>
           <h2>Additional information</h2>
-
-          <NavLink to={`${url}${moviesId}/cast `}>
+          <ul>
+            <li>
+              <Link to={`${url}/cast`}>Cast</Link>
+            </li>
+            <li>
+              <Link to={`${url}/reviews`}>Reviews</Link>
+            </li>
+          </ul>
+          <Route path={`${path}/cast`}>
             <Cast />
-          </NavLink>
-
-          <Route path={`${path}:movieId/cast`} exact>
-            <MovieDetailsPage />
           </Route>
 
-          <NavLink to={`${url}${moviesId}/reviews `}>
+          <Route path={`${path}/reviews`}>
             <Reviews />
-          </NavLink>
-
-          <Route path={`${path}:movieId/reviews`} exact>
-            <MovieDetailsPage />
           </Route>
         </>
       )}
