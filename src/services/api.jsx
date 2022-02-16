@@ -15,9 +15,9 @@ export function fetchTrending() {
   );
 }
 
-export function fetchSearch(moviesId) {
+export function fetchSearch(newImput) {
   return fetchWithErrorHandling(
-    `${BASE_URL}/search/${moviesId}?api_key=${KEY}`
+    `${BASE_URL}/search/movie?api_key=${KEY}&query=${newImput}`
   );
 }
 
