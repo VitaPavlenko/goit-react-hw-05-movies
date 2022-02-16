@@ -1,30 +1,33 @@
 import { useState, useEffect } from 'react';
 import * as api from '../services/api';
-import { Link, useRouteMatch, useLocation } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
+import qs from 'query-string';
+import { useLocation, useHistory } from 'react-router-dom';
 const MoviesPage = () => {
-  const [hits, setHits] = useState([]);
+  const [cards, setCards] = useState([]);
   const [newImput, setNewImput] = useState('');
   const { url } = useRouteMatch();
   const location = useLocation();
+  const history = useHistory();
+  const { query } = qs.parse(location.search);
+
   const handleNameChange = event => {
-    console.log(event.currentTarget.value);
     const inputValue = event.currentTarget.value.trim();
 
     setNewImput(inputValue.toLowerCase());
   };
 
   useEffect(() => {
-    api.fetchSearch(newImput).then(setHits);
-  }, [newImput]);
-
-  console.log(hits);
+    query && api.fetchSearch(query).then(setCards);
+  }, [query]);
 
   const onSubmit = e => {
     e.preventDefault();
 
     if (!newImput) return;
+    history.push({ pathname: '/movies', search: '?query=' + newImput });
     setNewImput(newImput);
-    setHits(hits);
+    setCards(cards);
   };
 
   return (
@@ -40,9 +43,9 @@ const MoviesPage = () => {
           <span>Search</span>
         </button>
       </form>
-      {hits && (
+      {cards && (
         <ul>
-          {hits?.results?.map(hit => (
+          {cards?.results?.map(hit => (
             <li key={hit.id}>
               <Link
                 to={{
