@@ -9,7 +9,7 @@ export default function HomePage() {
   useEffect(() => {
     api.fetchTrending().then(setFilms);
   }, []);
-
+  console.log(films);
   return (
     <>
       <h2>Trending today</h2>

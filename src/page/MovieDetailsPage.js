@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import * as api from '../services/api';
 import Cast from '../components/Cast/Cast';
 import Reviews from 'components/Reviews/Reviews';
-
+import img from '../img/img.png';
 const MovieDetailsPage = () => {
   const { moviesId } = useParams();
   const [films, setFilms] = useState(null);
@@ -13,7 +13,7 @@ const MovieDetailsPage = () => {
     api.fetchMovieDetails(moviesId).then(setFilms);
   }, [moviesId]);
 
-  // console.log(films);
+  console.log(films);
   //   const { backdrop_path, original_title } = films;
   const imgUrl = 'https://image.tmdb.org/t/p/w400';
 
@@ -23,9 +23,17 @@ const MovieDetailsPage = () => {
       <br />
       {films && (
         <>
-          <img src={imgUrl + films.backdrop_path} alt={films.original_title} />
+          {films.backdrop_path ? (
+            <img
+              src={imgUrl + films.backdrop_path}
+              alt={films.original_title}
+            />
+          ) : (
+            <img src={img} alt={films.original_title} />
+          )}
+
           <h2>{films.original_title}</h2>
-          <p>User Score: {(films.vote_average * 100) / 10}%</p>
+          <p>User Score: {Math.round((films.vote_average * 100) / 10)}%</p>
           <h3>overview</h3>
           <p>{films.overview}</p>
           <h3>Genres</h3>

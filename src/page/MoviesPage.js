@@ -44,7 +44,7 @@ const MoviesPage = () => {
         <ul>
           {hits?.results?.map(hit => (
             <li key={hit.id}>
-              <Link to={`${url}/${hit.id}`}>
+              <Link to={`${url}movies/${hit.id}`}>
                 {hit.title} {hit.original_name}
               </Link>
             </li>
