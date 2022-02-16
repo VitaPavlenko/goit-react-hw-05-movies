@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import * as api from '../services/api';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useRouteMatch, useLocation } from 'react-router-dom';
 const MoviesPage = () => {
   const [hits, setHits] = useState([]);
   const [newImput, setNewImput] = useState('');
   const { url } = useRouteMatch();
-
+  const location = useLocation();
   const handleNameChange = event => {
     console.log(event.currentTarget.value);
     const inputValue = event.currentTarget.value.trim();
@@ -44,7 +44,12 @@ const MoviesPage = () => {
         <ul>
           {hits?.results?.map(hit => (
             <li key={hit.id}>
-              <Link to={`${url}movies/${hit.id}`}>
+              <Link
+                to={{
+                  pathname: `${url}/${hit.id}`,
+                  state: { from: location },
+                }}
+              >
                 {hit.title} {hit.original_name}
               </Link>
             </li>

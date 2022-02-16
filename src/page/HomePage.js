@@ -1,11 +1,11 @@
 import * as api from '../services/api';
 import { useState, useEffect } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useRouteMatch, useLocation } from 'react-router-dom';
 
 export default function HomePage() {
   const [films, setFilms] = useState(null);
   const { url } = useRouteMatch();
-
+  const location = useLocation();
   useEffect(() => {
     api.fetchTrending().then(setFilms);
   }, []);
@@ -18,7 +18,12 @@ export default function HomePage() {
         <ul>
           {films.results.map(film => (
             <li key={film.id}>
-              <Link to={`${url}movies/${film.id}`}>
+              <Link
+                to={{
+                  pathname: `${url}movies/${film.id}`,
+                  state: { from: location },
+                }}
+              >
                 {film.title} {film.original_name}
               </Link>
             </li>

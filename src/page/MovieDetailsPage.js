@@ -4,11 +4,17 @@ import * as api from '../services/api';
 import Cast from '../components/Cast/Cast';
 import Reviews from 'components/Reviews/Reviews';
 import img from '../img/img.png';
+import { useLocation, useHistory } from 'react-router-dom';
 const MovieDetailsPage = () => {
   const { moviesId } = useParams();
   const [films, setFilms] = useState(null);
   const { url, path } = useRouteMatch();
+  const history = useHistory();
+  const location = useLocation();
 
+  const handleGoBack = () => {
+    history.push(location.state.from);
+  };
   useEffect(() => {
     api.fetchMovieDetails(moviesId).then(setFilms);
   }, [moviesId]);
@@ -19,7 +25,9 @@ const MovieDetailsPage = () => {
 
   return (
     <>
-      <Link to="/">Go back</Link>
+      <button type="button" onClick={handleGoBack}>
+        GoBack
+      </button>
       <br />
       {films && (
         <>
@@ -45,10 +53,24 @@ const MovieDetailsPage = () => {
           <h2>Additional information</h2>
           <ul>
             <li>
-              <Link to={`${url}/cast`}>Cast</Link>
+              <Link
+                to={{
+                  pathname: `${url}/cast`,
+                  state: { from: location.state?.from || '/' },
+                }}
+              >
+                Cast
+              </Link>
             </li>
             <li>
-              <Link to={`${url}/reviews`}>Reviews</Link>
+              <Link
+                to={{
+                  pathname: `${url}/reviews`,
+                  state: { from: location.state?.from || '/' },
+                }}
+              >
+                Reviews
+              </Link>
             </li>
           </ul>
           <Route path={`${path}/cast`}>
